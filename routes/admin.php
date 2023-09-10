@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AchievementController;
 use App\Http\Controllers\Api\AdminLoginController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', AdminLoginController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
+
+    Route::middleware('abilities:server:admin')->group(function () {
+        Route::apiResources([
+            'achievements' => AchievementController::class,
+        ]);
+    });
 });
