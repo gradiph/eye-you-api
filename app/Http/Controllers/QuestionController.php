@@ -6,7 +6,6 @@ use App\Http\Requests\Question\StoreRequest;
 use App\Http\Requests\Question\UpdateRequest;
 use App\Models\Question;
 use App\Models\Test;
-use Illuminate\Http\Request;
 
 class QuestionController extends Controller
 {
@@ -32,6 +31,7 @@ class QuestionController extends Controller
         $question = new Question;
         $question->test_id = $test->id;
         $question->image = $path;
+        $question->duration = $request->duration;
         $question->save();
 
         return response()->json([
@@ -54,9 +54,12 @@ class QuestionController extends Controller
      */
     public function update(UpdateRequest $request, Test $test, Question $question)
     {
-        $path = $request->file('image')->storePublicly('public/images');
-
-        $question->image = $path;
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->storePublicly('public/images');
+            $question->image = $path;
+        }
+        
+        $question->duration = $request->duration;
         $question->save();
 
         return response()->json([

@@ -15,6 +15,7 @@ class StoreRequest extends FormRequest
     {
         return [
             'image' => 'required|file|mimetypes:image/jpeg,image/png',
+            'duration' => 'required|integer',
         ];
     }
 }

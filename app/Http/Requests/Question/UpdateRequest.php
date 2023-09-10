@@ -14,7 +14,8 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'image' => 'required|file|mimetypes:image/jpeg,image/png',
+            'image' => 'sometimes|file|mimetypes:image/jpeg,image/png',
+            'duration' => 'required|integer',
         ];
     }
 }

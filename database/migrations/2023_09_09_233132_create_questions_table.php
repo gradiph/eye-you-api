@@ -18,6 +18,7 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->text('image');
+            $table->integer('duration');
             $table->timestamps();
         });
     }
