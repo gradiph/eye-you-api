@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\AchievementController;
 use App\Http\Controllers\Api\AdminLoginController;
+use App\Http\Controllers\Api\UploadFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -24,6 +25,9 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('abilities:server:admin')->group(function () {
+
+        Route::post('upload-file', UploadFileController::class);
+
         Route::apiResources([
             'achievements' => AchievementController::class,
         ]);
