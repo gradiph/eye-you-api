@@ -13,10 +13,12 @@ class ModeSeeder extends Seeder
     public function run(): void
     {
         \App\Models\Mode::create([
+            'id' => 1,
             'name' => 'Number',
             'image' => '/images/1-1.png',
         ]);
         \App\Models\Mode::create([
+            'id' => 2,
             'name' => 'Shape',
             'image' => '/images/TRIANGLE-3.png',
         ]);
