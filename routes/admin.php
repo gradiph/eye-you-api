@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\AnswerController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\UploadFileController;
@@ -27,10 +28,13 @@ Route::middleware('auth:sanctum')->group(function () {
     });
 
     Route::middleware('abilities:admin')->group(function () {
-
         Route::post('upload-file', UploadFileController::class);
-
+        
         Route::prefix('tests/{test}')->group(function () {
+            Route::prefix('questions/{question}')->group(function () {
+                Route::apiResource('answers', AnswerController::class);
+            });
+
             Route::apiResource('questions', QuestionController::class);
         });
 

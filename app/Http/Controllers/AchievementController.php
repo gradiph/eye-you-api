@@ -54,7 +54,6 @@ class AchievementController extends Controller
      */
     public function update(UpdateRequest $request, Achievement $achievement)
     {
-        Log::debug('updaterequest: ', $request->all());
         if ($request->hasFile('image')) {
             $path = $request->file('image')->storePublicly('public/images');
             $achievement->image = $path;
