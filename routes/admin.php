@@ -3,9 +3,10 @@
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AnswerController;
+use App\Http\Controllers\LogoutController;
 use App\Http\Controllers\QuestionController;
+use App\Http\Controllers\ResultController;
 use App\Http\Controllers\TestController;
-use App\Http\Controllers\UploadFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,10 +27,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', function (Request $request) {
         return $request->user();
     });
+    Route::post('/logout', LogoutController::class);
 
     Route::middleware('abilities:admin')->group(function () {
-        Route::post('upload-file', UploadFileController::class);
-        
         Route::prefix('tests/{test}')->group(function () {
             Route::prefix('questions/{question}')->group(function () {
                 Route::apiResource('answers', AnswerController::class);
@@ -41,6 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResources([
             'achievements' => AchievementController::class,
             'tests' => TestController::class,
+            'results' => ResultController::class,
         ]);
     });
 });
