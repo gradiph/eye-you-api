@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UploadFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -30,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::apiResources([
             'achievements' => AchievementController::class,
+            'tests' => TestController::class,
         ]);
     });
 });
