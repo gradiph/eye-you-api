@@ -41,7 +41,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::apiResources([
             'achievements' => AchievementController::class,
             'tests' => TestController::class,
-            'results' => ResultController::class,
         ]);
+
+        Route::get('/results', [ResultController::class, 'index']);
     });
 });
