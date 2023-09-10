@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Test\StoreRequest;
 use App\Http\Requests\Test\UpdateRequest;
 use App\Models\Test;
-use Illuminate\Http\Request;
 
 class TestController extends Controller
 {
@@ -84,7 +83,7 @@ class TestController extends Controller
             'level',
             'mode',
         ]);
-        
+
         $test->delete();
         
         return response()->json([
