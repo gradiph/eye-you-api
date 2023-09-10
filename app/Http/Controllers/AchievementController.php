@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Achievement\StoreRequest;
 use App\Http\Requests\Achievement\UpdateRequest;
 use App\Models\Achievement;
+use Illuminate\Support\Facades\Log;
 
 class AchievementController extends Controller
 {
@@ -25,14 +26,12 @@ class AchievementController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        $args = $request->only([
-            'name',
-            'image',
-        ]);
-
+        $path = $request->file('image')->storePublicly('public/images');
+        
         $achievement = new Achievement();
-        $achievement->name = $args['name'];
-        $achievement->image = $args['image'];
+        $achievement->id = $request->id;
+        $achievement->name = $request->name;
+        $achievement->image = $path;
         $achievement->save();
 
         return response()->json([
@@ -55,8 +54,13 @@ class AchievementController extends Controller
      */
     public function update(UpdateRequest $request, Achievement $achievement)
     {
+        Log::debug('updaterequest: ', $request->all());
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->storePublicly('public/images');
+            $achievement->image = $path;
+        }
+        
         $achievement->name = $request->name;
-        $achievement->image = $request->image;
         $achievement->save();
 
         return response()->json([

@@ -14,8 +14,9 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'required|numeric',
             'name' => 'required',
-            'image' => 'required',
+            'image' => 'required|file|mimetypes:image/jpeg,image/png',
         ];
     }
 }

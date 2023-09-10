@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
         return $request->user();
     });
 
-    Route::middleware('abilities:server:admin')->group(function () {
+    Route::middleware('abilities:admin')->group(function () {
 
         Route::post('upload-file', UploadFileController::class);
 

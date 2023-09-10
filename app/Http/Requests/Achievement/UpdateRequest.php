@@ -15,7 +15,7 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'image' => 'required',
+            'image' => 'sometimes|file|mimetypes:image/jpeg,image/png',
         ];
     }
 }

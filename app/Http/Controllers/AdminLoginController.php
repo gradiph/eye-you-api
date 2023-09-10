@@ -29,7 +29,7 @@ class AdminLoginController extends Controller
         $token = $admin->createToken('admin-token', ['admin']);
 
         return response()->json([
-            'token' => $token
+            'token' => $token->plainTextToken
         ]);
     }
 }

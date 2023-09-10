@@ -2,8 +2,12 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
@@ -25,9 +29,28 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            Log::debug('[NotFoundHttpException]: ' . $e->getMessage(), [$request]);
             return response()->json([
-                'message' => 'Data not found',
+                'message' => 'Not Found',
             ], 404);
+        });
+        $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
+            Log::debug('[AccessDeniedHttpException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Forbidden',
+            ], 403);
+        });
+        $this->renderable(function (UniqueConstraintViolationException $e, Request $request) {
+            Log::debug('[UniqueConstraintViolationException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Duplicated Entry',
+            ], 422);
+        });
+        $this->renderable(function (QueryException $e, Request $request) {
+            Log::debug('[QueryException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
         });
     }
 }

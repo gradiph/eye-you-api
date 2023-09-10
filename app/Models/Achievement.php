@@ -10,6 +10,7 @@ class Achievement extends Model
     use HasFactory;
 
     protected $guarded = [];
+    public $incrementing = false;
 
     public function users()
     {
