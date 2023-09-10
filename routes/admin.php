@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Api\AchievementController;
-use App\Http\Controllers\Api\AdminLoginController;
-use App\Http\Controllers\Api\UploadFileController;
+use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\UploadFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
