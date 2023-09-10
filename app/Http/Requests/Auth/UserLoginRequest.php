@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Auth;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AdminLoginRequest extends FormRequest
+class UserLoginRequest extends FormRequest
 {
     /**
      * Get the validation rules that apply to the request.
@@ -14,7 +14,7 @@ class AdminLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'required|exists:App\Models\Admin,username',
+            'username' => 'required|exists:App\Models\User,username',
             'password' => 'required',
         ];
     }

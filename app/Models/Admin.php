@@ -21,9 +21,4 @@ class Admin extends Authenticatable
             set: fn ($value) => bcrypt($value)
         );
     }
-
-    public static function findByUsername($username): self|null {
-        return Admin::where('username', $username)
-            ->first();
-    }
 }
