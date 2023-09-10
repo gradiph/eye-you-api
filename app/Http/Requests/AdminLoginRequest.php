@@ -4,14 +4,14 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateAwardRequest extends FormRequest
+class AdminLoginRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,8 @@ class UpdateAwardRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'username' => 'required|exists:App\Models\Admin,username',
+            'password' => 'required',
         ];
     }
 }

@@ -5,10 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Admin extends Model
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory;
     
     protected $guarded = [];
     protected $hidden = ['password'];
@@ -19,5 +20,10 @@ class Admin extends Model
             get: fn ($value) => $value,
             set: fn ($value) => bcrypt($value)
         );
+    }
+
+    public static function findByUsername($username): self|null {
+        return Admin::where('username', $username)
+            ->first();
     }
 }
