@@ -12,15 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('achievement_user', function (Blueprint $table) {
-            $table->foreignIdFor(App\Models\Achievement::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->unsignedBigInteger('achievement_id');
             $table->foreignIdFor(App\Models\User::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->timestamps();
+
+            $table->foreign('achievement_id')
+                ->references('id')
+                ->on('achievements')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 

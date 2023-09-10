@@ -12,10 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('modes', function (Blueprint $table) {
-            $table->unsignedBigInteger('id')->primary();
+            $table->unsignedBigInteger('id');
             $table->string('name');
             $table->text('image');
             $table->timestamps();
+
+            $table->primary('id');
         });
     }
 

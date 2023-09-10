@@ -13,7 +13,10 @@ class Question extends Model
 
     public function results()
     {
-        return $this->hasMany(Question::class);
+        return $this->belongsToMany(Result::class)
+            ->using(ResultQuestion::class)
+            ->withPivot(['answer_id'])
+            ->withTimestamps();
     }
 
     public function answers()

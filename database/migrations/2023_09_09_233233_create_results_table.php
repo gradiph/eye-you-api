@@ -21,7 +21,8 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->integer('score');
+            $table->integer('score')->default(0);
+            $table->timestamp('ended_at')->nullable();
             $table->timestamps();
         });
     }

@@ -13,15 +13,20 @@ return new class extends Migration
     {
         Schema::create('tests', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Level::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->foreignIdFor(App\Models\Mode::class)
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
+            $table->unsignedBigInteger('level_id');
+            $table->unsignedBigInteger('mode_id');
             $table->timestamps();
+
+            $table->foreign('level_id')
+                ->references('id')
+                ->on('levels')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
+            $table->foreign('mode_id')
+                ->references('id')
+                ->on('modes')
+                ->cascadeOnDelete()
+                ->cascadeOnUpdate();
         });
     }
 
