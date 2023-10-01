@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\UserAuthController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\User\AuthController;
+use App\Http\Controllers\User\GameController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,9 +16,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('register', [UserAuthController::class, 'register']);
-Route::post('login', [UserAuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+Route::post('login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::middleware('abilities:user')->group(function () {
+        Route::get('profile', [ProfileController::class, 'index']);
+        
+        Route::prefix('game')->group(function () {
+            Route::get('modes', [GameController::class, 'modes']);
+        });
+    });
 });

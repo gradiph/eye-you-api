@@ -7,6 +7,7 @@ use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Error\FatalError;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use TypeError;
@@ -55,6 +56,12 @@ class Handler extends ExceptionHandler
         });
         $this->renderable(function (TypeError $e, Request $request) {
             Log::debug('[TypeError]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
+        });
+        $this->renderable(function (FatalError $e, Request $request) {
+            Log::debug('[FatalError]: ' . $e->getMessage(), [$request]);
             return response()->json([
                 'message' => 'Internal Server Error',
             ], 500);
