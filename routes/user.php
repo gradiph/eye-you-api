@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
         
         Route::prefix('game')->group(function () {
             Route::get('modes', [GameController::class, 'modes']);
+            Route::post('start', [GameController::class, 'start']);
         });
     });
 });
