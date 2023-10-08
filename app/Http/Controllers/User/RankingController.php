@@ -3,16 +3,18 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
+use App\Models\Test;
 
 class RankingController extends Controller
 {
-    public function index() {
-        $users = User::orderBy('total_score', 'desc')
-            ->orderBy('updated_at', 'desc')
+    public function index(Test $test) {
+        $results = $test->results()
+            ->with('user')
+            ->orderBy('score', 'desc')
+            ->orderBy('created_at', 'asc')
             ->simplePaginate(5);
         return response()->json([
-            'users' => $users,
+            'results' => $results,
         ]);
     }
 }

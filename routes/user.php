@@ -31,6 +31,6 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('result/{result}', [GameController::class, 'result']);
         });
 
-        Route::get('ranking', [RankingController::class, 'index']);
+        Route::get('ranking/{test}', [RankingController::class, 'index']);
     });
 });
