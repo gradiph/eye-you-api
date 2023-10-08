@@ -100,4 +100,14 @@ class GameController extends Controller
             'result' => $result,
         ]);
     }
+
+    public function result(Result $result) {
+        $result->load([
+            'test.questions.answers',
+            'questions',
+        ]);
+        return response()->json([
+            'result' => $result,
+        ]);
+    }
 }

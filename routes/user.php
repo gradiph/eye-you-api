@@ -3,6 +3,7 @@
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\GameController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\User\RankingController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,6 +28,9 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('modes', [GameController::class, 'modes']);
             Route::post('start', [GameController::class, 'start']);
             Route::post('submit', [GameController::class, 'submit']);
+            Route::get('result/{result}', [GameController::class, 'result']);
         });
+
+        Route::get('ranking', [RankingController::class, 'index']);
     });
 });
