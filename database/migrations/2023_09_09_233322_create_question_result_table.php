@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('result_question', function (Blueprint $table) {
-            $table->foreignIdFor(App\Models\Result::class)
+        Schema::create('question_result', function (Blueprint $table) {
+            $table->foreignIdFor(App\Models\Question::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignIdFor(App\Models\Question::class)
+            $table->foreignIdFor(App\Models\Result::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
@@ -34,11 +34,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('result_question', function (Blueprint $table) {
-            $table->dropForeignIdFor(App\Models\Result::class);
+        Schema::table('question_result', function (Blueprint $table) {
             $table->dropForeignIdFor(App\Models\Question::class);
+            $table->dropForeignIdFor(App\Models\Result::class);
             $table->dropForeignIdFor(App\Models\Answer::class);
         });
-        Schema::dropIfExists('result_question');
+        Schema::dropIfExists('question_result');
     }
 };

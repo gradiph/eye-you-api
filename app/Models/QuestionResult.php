@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class ResultQuestion extends Pivot
+class QuestionResult extends Pivot
 {
     public function answer()
     {
