@@ -37,6 +37,7 @@ class GameController extends Controller
 
         return response()->json([
             'result' => $result,
+            'test' => $test,
             'questions' => $questions,
         ]);
     }
