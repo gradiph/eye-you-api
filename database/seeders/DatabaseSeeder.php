@@ -18,5 +18,7 @@ class DatabaseSeeder extends Seeder
         $this->call(LevelSeeder::class);
         $this->call(ModeSeeder::class);
         $this->call(AchievementSeeder::class);
+        $this->call(TestSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

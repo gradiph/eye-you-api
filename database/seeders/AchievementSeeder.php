@@ -15,22 +15,22 @@ class AchievementSeeder extends Seeder
         \App\Models\Achievement::create([
             'id' => 1,
             'name' => 'First Login',
-            'image' => '/first-login.jpg',
+            'image' => '/images/achievement-login.png',
         ]);
         \App\Models\Achievement::create([
             'id' => 2,
             'name' => 'Finish Number Mode',
-            'image' => '/finish-number-mode.jpg',
+            'image' => '/images/achievement-mode-number.png',
         ]);
         \App\Models\Achievement::create([
             'id' => 3,
             'name' => 'Reach Score 500',
-            'image' => '/reach-score-500.jpg',
+            'image' => '/images/achievement-score-500.png',
         ]);
         \App\Models\Achievement::create([
             'id' => 4,
             'name' => 'Finish Shape Mode',
-            'image' => '/finish-shape-mode.jpg',
+            'image' => '/images/achievement-mode-shape.png',
         ]);
     }
 }

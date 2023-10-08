@@ -17,7 +17,7 @@ class GameController extends Controller
         ]);
     }
 
-    public function selectMode(Request $request)
+    public function start(Request $request)
     {
         
     }

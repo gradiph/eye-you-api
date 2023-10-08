@@ -19,6 +19,7 @@ return new class extends Migration
                 ->cascadeOnDelete();
             $table->text('image');
             $table->string('alt_text');
+            $table->boolean('is_correct')->default(false);
             $table->timestamps();
         });
     }
