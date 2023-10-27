@@ -23,6 +23,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::middleware('abilities:user')->group(function () {
         Route::get('profile', [ProfileController::class, 'index']);
+        Route::put('profile', [ProfileController::class, 'update']);
         
         Route::prefix('game')->group(function () {
             Route::get('modes', [GameController::class, 'modes']);
