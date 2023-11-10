@@ -18,7 +18,7 @@ class TestSeeder extends Seeder
         ]);
         for ($i = 0; $i < 10; ++$i) {
             $question = $test->questions()->create([
-                'image' => '/images/1-1.png',
+                'image' => '/images/1-'.fake()->rand(1, 5).'.png',
                 'duration' => '10',
             ]);
             $question->answers()->create([
