@@ -10,6 +10,7 @@ use App\Models\Mode;
 use App\Models\Question;
 use App\Models\Result;
 use App\Models\Test;
+use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
 class GameController extends Controller
@@ -94,6 +95,11 @@ class GameController extends Controller
         $result->update([
             'score' => 100 * $totalCorrectAnswers / $totalQuestions,
         ]);
+
+        /** @var User */
+        $user = auth()->user();
+        $user->total_score = Result::where('user_id', auth()->id())->sum('score');
+        $user->save();
 
         return response()->json([
             'success' => true,
