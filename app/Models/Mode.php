@@ -9,6 +9,9 @@ class Mode extends Model
 {
     use HasFactory;
 
+    const NUMBER = 1;
+    const SHAPE = 2;
+
     protected $guarded = [];
     public $incrementing = false;
 

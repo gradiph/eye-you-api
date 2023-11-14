@@ -5,6 +5,7 @@ namespace App\Http\Controllers\User;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\UserLoginRequest;
 use App\Http\Requests\Auth\UserRegisterRequest;
+use App\Models\Achievement;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -28,6 +29,7 @@ class AuthController extends Controller
     
     public function login(UserLoginRequest $request)
     {
+        /** @var User */
         $user = User::where('username', $request->username)
             ->first();
         if (!Hash::check($request->password, $user->password)) {
@@ -37,6 +39,9 @@ class AuthController extends Controller
         }
 
         $token = $user->createToken('user-token', ['user']);
+        if (is_null($user->achievements()->find(Achievement::FIRST_LOGIN))) {
+            $user->achievements()->attach(Achievement::FIRST_LOGIN);
+        }
 
         return response()->json([
             'token' => $token->plainTextToken

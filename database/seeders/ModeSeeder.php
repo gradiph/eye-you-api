@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Mode;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -12,13 +13,13 @@ class ModeSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Mode::create([
-            'id' => 1,
+        Mode::create([
+            'id' => Mode::NUMBER,
             'name' => 'Number',
             'image' => '/images/1-1.png',
         ]);
-        \App\Models\Mode::create([
-            'id' => 2,
+        Mode::create([
+            'id' => Mode::SHAPE,
             'name' => 'Shape',
             'image' => '/images/TRIANGLE-3.png',
         ]);
