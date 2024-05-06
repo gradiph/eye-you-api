@@ -2,8 +2,15 @@
 
 namespace App\Exceptions;
 
+use Illuminate\Database\QueryException;
+use Illuminate\Database\UniqueConstraintViolationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Throwable;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\ErrorHandler\Error\FatalError;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use TypeError;
 
 class Handler extends ExceptionHandler
 {
@@ -23,8 +30,41 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (NotFoundHttpException $e, Request $request) {
+            Log::debug('[NotFoundHttpException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Not Found',
+            ], 404);
+        });
+        $this->renderable(function (AccessDeniedHttpException $e, Request $request) {
+            Log::debug('[AccessDeniedHttpException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Forbidden',
+            ], 403);
+        });
+        $this->renderable(function (UniqueConstraintViolationException $e, Request $request) {
+            Log::debug('[UniqueConstraintViolationException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Duplicated Entry',
+            ], 422);
+        });
+        $this->renderable(function (QueryException $e, Request $request) {
+            Log::debug('[QueryException]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
+        });
+        $this->renderable(function (TypeError $e, Request $request) {
+            Log::debug('[TypeError]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
+        });
+        $this->renderable(function (FatalError $e, Request $request) {
+            Log::debug('[FatalError]: ' . $e->getMessage(), [$request]);
+            return response()->json([
+                'message' => 'Internal Server Error',
+            ], 500);
         });
     }
 }
