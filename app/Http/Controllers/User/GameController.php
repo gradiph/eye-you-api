@@ -129,8 +129,38 @@ class GameController extends Controller
             'test.questions.answers',
             'questions',
         ]);
+        
+        $totalQuestions = count($result->test->questions);
+        $totalCorrectAnswers = 0;
+        foreach ($result->questions as $question) {
+            $answer = $question->pivot->answer;
+            if ($answer?->is_correct ?? false) {
+                $totalCorrectAnswers++;
+            }
+        }
+        $totalWrongAnswers = $totalQuestions - $totalCorrectAnswers;
+        $accuracy = $totalCorrectAnswers * 100 / $totalQuestions;
+        
+        $title = 'Mata Normal';
+        $description = 'Kamu memiliki penglihatan mata normal, artinya kamu dapat melihat berbagai jutaan warna!';
+        if ($accuracy >= 40 && $accuracy < 80) {
+            $title = 'Buta Warna Sebagian';
+            $description = 'Kamu mengalami sedikit gangguan dalam membedakan warna merah, hijau, dan biru.';
+        } else if ($accuracy < 40) {
+            $title = 'Buta Warna';
+            $description = 'Kamu mengidap penyakit buta warna. Disarankan untuk menghubungi dokter ahli.';
+        }
+
         return response()->json([
             'result' => $result,
+            'analyzes' => [
+                'total_questions' => $totalQuestions,
+                'total_correct' => $totalCorrectAnswers,
+                'total_wrong' => $totalWrongAnswers,
+                'accuracy' => $accuracy,
+                'title' => $title,
+                'description' => $description,
+            ],
         ]);
     }
 }
