@@ -18,10 +18,10 @@ class ModeSeeder extends Seeder
             'name' => 'Number',
             'image' => '/images/1-1.png',
         ]);
-        Mode::create([
-            'id' => Mode::SHAPE,
-            'name' => 'Shape',
-            'image' => '/images/TRIANGLE-3.png',
-        ]);
+        // Mode::create([
+        //     'id' => Mode::SHAPE,
+        //     'name' => 'Shape',
+        //     'image' => '/images/TRIANGLE-3.png',
+        // ]);
     }
 }

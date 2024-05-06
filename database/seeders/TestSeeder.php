@@ -67,30 +67,30 @@ class TestSeeder extends Seeder
                 'is_correct' => false,
             ]);
         }
-        $test = \App\Models\Test::create([
-            'level_id' => '1',
-            'mode_id' => '2',
-        ]);
-        for ($i = 0; $i < 10; ++$i) {
-            $question = $test->questions()->create([
-                'image' => '/images/SQUARE-1.png',
-                'duration' => '10',
-            ]);
-            $question->answers()->create([
-                'image' => '/images/answer-shape-triangle.png',
-                'alt_text' => 'triangle',
-                'is_correct' => true,
-            ]);
-            $question->answers()->create([
-                'image' => '/images/answer-shape-square.png',
-                'alt_text' => 'square',
-                'is_correct' => false,
-            ]);
-            $question->answers()->create([
-                'image' => '/images/answer-shape-circle.png',
-                'alt_text' => 'circle',
-                'is_correct' => false,
-            ]);
-        }
+        // $test = \App\Models\Test::create([
+        //     'level_id' => '1',
+        //     'mode_id' => '2',
+        // ]);
+        // for ($i = 0; $i < 10; ++$i) {
+        //     $question = $test->questions()->create([
+        //         'image' => '/images/SQUARE-1.png',
+        //         'duration' => '10',
+        //     ]);
+        //     $question->answers()->create([
+        //         'image' => '/images/answer-shape-triangle.png',
+        //         'alt_text' => 'triangle',
+        //         'is_correct' => true,
+        //     ]);
+        //     $question->answers()->create([
+        //         'image' => '/images/answer-shape-square.png',
+        //         'alt_text' => 'square',
+        //         'is_correct' => false,
+        //     ]);
+        //     $question->answers()->create([
+        //         'image' => '/images/answer-shape-circle.png',
+        //         'alt_text' => 'circle',
+        //         'is_correct' => false,
+        //     ]);
+        // }
     }
 }
