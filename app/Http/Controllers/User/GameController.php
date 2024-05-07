@@ -75,6 +75,7 @@ class GameController extends Controller
         $answer = null;
         if (!is_null($answerText)) {
             $answer = $question->answers()->where('alt_text', $answerText)->first();
+            $result->questions()->attach($questionId, ['answer_id' => $answer->id]);
         } else {
             $question = Question::whereHas('answers', function ($query) use ($answerId) {
                 $query->where('id', $answerId);
@@ -87,9 +88,8 @@ class GameController extends Controller
             }
 
             $answer = Answer::find($answerId);
+            $result->questions()->attach($questionId, ['answer_id' => $answerId]);
         }
-
-        $result->questions()->attach($questionId, ['answer_id' => $answerId]);
         
         $isCorrect = $answer?->is_correct ?? false;
         
