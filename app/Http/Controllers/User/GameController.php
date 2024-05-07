@@ -96,7 +96,7 @@ class GameController extends Controller
                 $totalCorrectAnswers++;
             }
         }
-        $result->score = 100 * $totalCorrectAnswers / $totalQuestions;
+        $result->score = 100 * $totalCorrectAnswers;
         $result->save();
         
         $totalScore = Result::where('user_id', auth()->id())->sum('score');
