@@ -122,6 +122,10 @@ class GameController extends Controller
             $user->achievements()->attach(Achievement::REACH_SCORE_500);
         }
 
+        if ($totalScore >= 1500 && is_null($user->achievements()->find(Achievement::REACH_SCORE_1500))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_1500);
+        }
+
         return response()->json([
             'success' => true,
             'isCorrect' => $isCorrect,

@@ -15,23 +15,28 @@ class AchievementSeeder extends Seeder
     {
         Achievement::create([
             'id' => Achievement::FIRST_LOGIN,
-            'name' => 'First Login',
+            'name' => 'Berhasil masuk!',
             'image' => '/images/achievement-login.png',
         ]);
         Achievement::create([
             'id' => Achievement::FINISH_NUMBER_MODE,
-            'name' => 'Finish Number Mode',
+            'name' => 'Selesaikan mode angka!',
             'image' => '/images/achievement-mode-number.png',
         ]);
         Achievement::create([
             'id' => Achievement::REACH_SCORE_500,
-            'name' => 'Reach Score 500',
+            'name' => 'Capai skor 500!',
             'image' => '/images/achievement-score-500.png',
         ]);
         Achievement::create([
             'id' => Achievement::FINISH_SHAPE_MODE,
             'name' => 'Finish Shape Mode',
             'image' => '/images/achievement-mode-shape.png',
+        ]);
+        Achievement::create([
+            'id' => Achievement::REACH_SCORE_1500,
+            'name' => 'Capai skor 1500!',
+            'image' => '/images/achievement-score-500.png',
         ]);
     }
 }

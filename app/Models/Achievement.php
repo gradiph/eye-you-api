@@ -13,6 +13,7 @@ class Achievement extends Model
     const FINISH_NUMBER_MODE = 2;
     const REACH_SCORE_500 = 3;
     const FINISH_SHAPE_MODE = 4;
+    const REACH_SCORE_1500 = 5;
 
     protected $guarded = [];
     public $incrementing = false;
