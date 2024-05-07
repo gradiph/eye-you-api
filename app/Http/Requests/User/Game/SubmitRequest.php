@@ -27,6 +27,7 @@ class SubmitRequest extends FormRequest
             'resultId' => 'required|exists:App\Models\Result,id',
             'questionId' => 'required|exists:App\Models\Question,id',
             'answerId' => 'nullable|exists:App\Models\Answer,id',
+            'answerText' => 'nullable',
         ];
     }
 }

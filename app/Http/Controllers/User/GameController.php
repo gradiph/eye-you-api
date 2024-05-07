@@ -49,6 +49,7 @@ class GameController extends Controller
         $resultId = $request->resultId;
         $questionId = $request->questionId;
         $answerId = $request->answerId;
+        $answerText = $request->answerText;
 
         /** @var Result */
         $result = Result::find($resultId);
@@ -71,7 +72,10 @@ class GameController extends Controller
             ]);
         }
 
-        if (is_null(!$answerId)) {
+        $answer = null;
+        if (!is_null($answerText)) {
+            $answer = $question->answers()->where('alt_text', $answerText)->first();
+        } else {
             $question = Question::whereHas('answers', function ($query) use ($answerId) {
                 $query->where('id', $answerId);
             })->where('id', $questionId)->first();
@@ -81,11 +85,12 @@ class GameController extends Controller
                     'success' => false,
                 ]);
             }
+
+            $answer = Answer::find($answerId);
         }
 
         $result->questions()->attach($questionId, ['answer_id' => $answerId]);
         
-        $answer = Answer::find($answerId);
         $isCorrect = $answer?->is_correct ?? false;
         
         $totalQuestions = count($test->questions);
