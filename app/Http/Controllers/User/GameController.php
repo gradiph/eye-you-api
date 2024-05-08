@@ -61,6 +61,8 @@ class GameController extends Controller
             Log::error("questionId [$questionId] is already answered for resultId [$resultId]");
             return response()->json([
                 'success' => false,
+                'isCorrect' => false,
+                'result' => $result,
             ]);
         }
 
@@ -69,6 +71,8 @@ class GameController extends Controller
             Log::error("questionId [$questionId] is not valid for resultId [$resultId]");
             return response()->json([
                 'success' => false,
+                'isCorrect' => false,
+                'result' => $result,
             ]);
         }
 
@@ -84,6 +88,8 @@ class GameController extends Controller
                 Log::error("answerId [$answerId] is not valid for questionId [$questionId]");
                 return response()->json([
                     'success' => false,
+                    'isCorrect' => false,
+                    'result' => $result,
                 ]);
             }
 
