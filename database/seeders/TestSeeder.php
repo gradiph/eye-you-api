@@ -16,7 +16,7 @@ class TestSeeder extends Seeder
             'level_id' => '1',
             'mode_id' => '1',
         ]);
-        for ($i = 0; $i < 10; ++$i) {
+        for ($i = 0; $i < 15; ++$i) {
             $question = $test->questions()->create([
                 'image' => '/images/1-'.fake()->numberBetween(1, 5).'.png',
                 'duration' => '10',
