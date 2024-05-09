@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     tty: true
     environment:
-      - name=value
+      MYSQL_ROOT_PASSWORD: SUkses@202A
 
   app:
     build: .
@@ -18,17 +18,17 @@ services:
       - mysql
     restart: unless-stopped
     tty: true
-
-  nginx:
-    image: nginx:1.25.5-alpine-slim
-    depends_on:
-      - app
     ports:
-      - 80:80
-      - 443:443
-    restart: always
-    volumes:
-      - ./nginx/conf:/etc/nginx/conf.d/:ro
+      - 18000:8000
+
+  ngrok:
+    image: ngrok/ngrok:alpine
+    container_name: ngrok
+    ports:
+      - 14040:4040
+    environment:
+      NGROK_AUTHTOKEN: 2T62k8c5RGkGJa0opZas0jJgHP6_5TsWhQdKe6Y7giCvy9Asw
+    command: ["http", "http://app:8000"]
 
 volumes:
   mysql-data:
