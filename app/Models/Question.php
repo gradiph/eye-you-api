@@ -4,28 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Question extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
     
     protected $guarded = [];
 
+    public function testLevel()
+    {
+        return $this->belongsTo(TestLevel::class);
+    }
+
     public function results()
     {
-        return $this->belongsToMany(Result::class)
-            ->using(QuestionResult::class)
-            ->withPivot(['answer_id'])
-            ->withTimestamps();
-    }
-
-    public function answers()
-    {
-        return $this->hasMany(Answer::class);
-    }
-
-    public function test()
-    {
-        return $this->belongsTo(Test::class);
+        return $this->hasMany(ResultQuestion::class);
     }
 }

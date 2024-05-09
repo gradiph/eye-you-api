@@ -11,19 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('results', function (Blueprint $table) {
+        Schema::create('test_levels', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(App\Models\Test::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignIdFor(App\Models\User::class)
+            $table->foreignIdFor(App\Models\Level::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->integer('score')->default(0);
-            $table->timestamp('ended_at')->nullable();
+            $table->unsignedTinyInteger('order');
+            $table->unsignedSmallInteger('count');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -32,10 +33,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('results', function (Blueprint $table) {
+        Schema::table('test_levels', function (Blueprint $table) {
+            $table->dropForeignIdFor(App\Models\Level::class);
             $table->dropForeignIdFor(App\Models\Test::class);
-            $table->dropForeignIdFor(App\Models\User::class);
         });
-        Schema::dropIfExists('results');
+        Schema::dropIfExists('test_levels');
     }
 };

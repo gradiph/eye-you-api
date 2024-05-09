@@ -12,12 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('levels', function (Blueprint $table) {
-            $table->unsignedBigInteger('id');
-            $table->integer('difficulty');
+            $table->id();
+            $table->unsignedBigInteger('mode_id');
+            $table->unsignedInteger('difficulty');
             $table->string('name');
+            $table->unsignedInteger('score');
             $table->timestamps();
+            $table->softDeletes();
 
-            $table->primary('id');
+            $table->foreign('mode_id')
+                ->references('id')
+                ->on('modes')
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 
@@ -26,6 +33,9 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::table('levels', function (Blueprint $table) {
+            $table->dropForeignIdFor(App\Models\Mode::class);
+        });
         Schema::dropIfExists('levels');
     }
 };

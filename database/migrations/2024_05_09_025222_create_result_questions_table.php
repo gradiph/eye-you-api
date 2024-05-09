@@ -11,7 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('question_result', function (Blueprint $table) {
+        Schema::create('result_questions', function (Blueprint $table) {
+            $table->id();
             $table->foreignIdFor(App\Models\Question::class)
                 ->constrained()
                 ->cascadeOnUpdate()
@@ -20,12 +21,12 @@ return new class extends Migration
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->foreignIdFor(App\Models\Answer::class)
-                ->nullable()
-                ->constrained()
-                ->cascadeOnUpdate()
-                ->cascadeOnDelete();
-            $table->nullableTimestamps();
+            $table->text('image');
+            $table->unsignedInteger('duration');
+            $table->unsignedInteger('score');
+            $table->string('correct_answer');
+            $table->string('actual_answer')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -34,10 +35,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('question_result', function (Blueprint $table) {
+        Schema::table('result_questions', function (Blueprint $table) {
             $table->dropForeignIdFor(App\Models\Question::class);
             $table->dropForeignIdFor(App\Models\Result::class);
-            $table->dropForeignIdFor(App\Models\Answer::class);
         });
         Schema::dropIfExists('question_result');
     }

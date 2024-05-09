@@ -18,12 +18,13 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->timestamps();
-
+            
+            $table->primary(['achievement_id', 'user_id']);
             $table->foreign('achievement_id')
                 ->references('id')
                 ->on('achievements')
-                ->cascadeOnDelete()
-                ->cascadeOnUpdate();
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
         });
     }
 

@@ -11,14 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(App\Models\Test::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
-            $table->text('image');
-            $table->integer('duration');
+            $table->foreignIdFor(App\Models\User::class)
+                ->constrained()
+                ->cascadeOnUpdate()
+                ->cascadeOnDelete();
+            $table->integer('score')->default(0);
+            $table->timestamp('ended_at')->nullable();
             $table->timestamps();
         });
     }
@@ -28,9 +32,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('questions', function (Blueprint $table) {
+        Schema::table('results', function (Blueprint $table) {
+            $table->dropForeignIdFor(App\Models\User::class);
             $table->dropForeignIdFor(App\Models\Test::class);
         });
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('results');
     }
 };

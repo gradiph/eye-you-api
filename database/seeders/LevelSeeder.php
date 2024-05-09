@@ -12,15 +12,23 @@ class LevelSeeder extends Seeder
      */
     public function run(): void
     {
-        \App\Models\Level::create([
-            'id' => 1,
-            'difficulty' => 1,
-            'name' => 'Easy',
-        ]);
-        \App\Models\Level::create([
-            'id' => 2,
-            'difficulty' => 9,
-            'name' => 'Hard',
-        ]);
+        $modes = \App\Models\Mode::all();
+        foreach ($modes as $mode) {
+            $mode->levels()->create([
+                'difficulty' => 1,
+                'name' => 'Easy',
+                'score' => 100,
+            ]);
+            $mode->levels()->create([
+                'difficulty' => 5,
+                'name' => 'Normal',
+                'score' => 200,
+            ]);
+            $mode->levels()->create([
+                'difficulty' => 9,
+                'name' => 'Hard',
+                'score' => 300,
+            ]);
+        }
     }
 }

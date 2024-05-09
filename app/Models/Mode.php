@@ -4,16 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Mode extends Model
 {
-    use HasFactory;
+    use HasFactory, SoftDeletes;
 
     const NUMBER = 1;
     const SHAPE = 2;
 
-    protected $guarded = [];
     public $incrementing = false;
+    protected $guarded = [];
+
+    public function levels()
+    {
+        return $this->hasMany(Level::class);
+    }
 
     public function tests()
     {

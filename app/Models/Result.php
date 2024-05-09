@@ -23,9 +23,6 @@ class Result extends Model
 
     public function questions()
     {
-        return $this->belongsToMany(Question::class)
-            ->using(QuestionResult::class)
-            ->withPivot(['answer_id'])
-            ->withTimestamps();
+        return $this->hasMany(ResultQuestion::class);
     }
 }

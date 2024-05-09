@@ -52,16 +52,16 @@ class User extends Authenticatable
             set: fn ($value) => bcrypt($value)
         );
     }
+    
+    public function achievements()
+    {
+        return $this->belongsToMany(Achievement::class)
+        ->using(AchievementUser::class)
+        ->withTimestamps();
+    }
 
     public function results()
     {
         return $this->hasMany(Result::class);
-    }
-
-    public function achievements()
-    {
-        return $this->belongsToMany(Achievement::class)
-            ->using(AchievementUser::class)
-            ->withTimestamps();
     }
 }

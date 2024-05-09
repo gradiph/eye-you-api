@@ -11,16 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\Question::class)
+            $table->foreignIdFor(App\Models\TestLevel::class)
                 ->constrained()
                 ->cascadeOnUpdate()
                 ->cascadeOnDelete();
             $table->text('image');
-            $table->string('alt_text');
-            $table->boolean('is_correct')->default(false);
+            $table->unsignedInteger('duration');
+            $table->string('answer');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -29,9 +30,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('answers', function (Blueprint $table) {
-            $table->dropForeignIdFor(App\Models\Question::class);
+        Schema::table('questions', function (Blueprint $table) {
+            $table->dropForeignIdFor(App\Models\TestLevel::class);
         });
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('questions');
     }
 };
