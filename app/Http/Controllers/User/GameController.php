@@ -141,17 +141,13 @@ class GameController extends Controller
 
     public function result(Result $result) {
         $result->load([
-            'test.levels.questions',
             'questions',
         ]);
         
-        $totalQuestions = count($result->test->questions);
-        $totalCorrectAnswers = 0;
-        foreach ($result->questions as $question) {
-            if ($question->pivot->answer == $result->test->questions()->find($question->id)->answer) {
-                $totalCorrectAnswers++;
-            }
-        }
+        $totalQuestions = count($result->questions);
+        $totalCorrectAnswers = $result->questions
+            ->filter(fn ($question) => $question->correct_answer == $question->actual_answer)
+            ->count();
         $totalWrongAnswers = $totalQuestions - $totalCorrectAnswers;
         $accuracy = $totalCorrectAnswers * 100 / $totalQuestions;
         
