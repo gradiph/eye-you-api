@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User\Game;
 
 use App\Models\Result;
+use App\Models\ResultQuestion;
 use Illuminate\Foundation\Http\FormRequest;
 
 class SubmitRequest extends FormRequest
@@ -12,8 +13,8 @@ class SubmitRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        $result = Result::find($this->resultId);
-        return $result->user_id === auth()->id();
+        $resultQuestion = ResultQuestion::find($this->id);
+        return $resultQuestion->result->user_id === auth()->id();
     }
 
     /**
@@ -24,10 +25,8 @@ class SubmitRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'resultId' => 'required|exists:App\Models\Result,id',
-            'questionId' => 'required|exists:App\Models\Question,id',
-            'answerId' => 'nullable|exists:App\Models\Answer,id',
-            'answerText' => 'nullable',
+            'id' => 'required|exists:App\Models\ResultQuestion,id',
+            'answer' => 'required',
         ];
     }
 }

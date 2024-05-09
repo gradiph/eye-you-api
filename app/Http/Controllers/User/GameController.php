@@ -6,10 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Game\StartRequest;
 use App\Http\Requests\User\Game\SubmitRequest;
 use App\Models\Achievement;
-use App\Models\Answer;
 use App\Models\Mode;
-use App\Models\Question;
 use App\Models\Result;
+use App\Models\ResultQuestion;
 use App\Models\Test;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
@@ -35,30 +34,56 @@ class GameController extends Controller
         $result = $test->results()->create([
             'user_id' => auth()->id(),
         ]);
-        $questions = $test->questions()->with('answers')->get();
+        $questions = collect();
+        foreach ($test->levels as $testLevel) {
+            $questions = $questions->merge(
+                $testLevel->questions()
+                    ->inRandomOrder()
+                    ->take($testLevel->count)
+                    ->get()
+            );
+        }
+        $savedQuestions = $questions->map(function ($question) use ($result) {
+            $resultQuestion = $result->questions()->create([
+                'question_id' => $question->id,
+                'image' => $question->image,
+                'duration' => $question->duration,
+                'correct_answer' => $question->answer,
+                'score' => $question->testLevel->level->score,
+            ]);
+            $question->result_question_id = $resultQuestion->id;
+            return $question;
+        });
 
         return response()->json([
             'result' => $result,
             'test' => $test,
-            'questions' => $questions,
+            'questions' => $savedQuestions,
         ]);
     }
 
     public function submit(SubmitRequest $request)
     {
-        $resultId = $request->resultId;
-        $questionId = $request->questionId;
-        $answerId = $request->answerId;
-        $answerText = $request->answerText;
+        $id = $request->id;
+        $answer = $request->answer;
 
-        /** @var Result */
-        $result = Result::find($resultId);
-        /** @var Test */
-        $test = $result->test;
+        $resultQuestion = ResultQuestion::with(['result', 'question'])
+            ->find($id);
+        if (is_null($resultQuestion)) {
+            Log::error('Invalid id', $request->all());
+            return response()->json([
+                'success' => false,
+                'isCorrect' => false,
+                'result' => null,
+            ]);
+        }
 
-        $question = $result->questions()->where('question_id', $questionId)->first();
-        if (!is_null($question)) {
-            Log::error("questionId [$questionId] is already answered for resultId [$resultId]");
+        $result = $resultQuestion->result;
+        if (!is_null($resultQuestion->actual_answer)) {
+            Log::error("The question is already answered.", [
+                'request' => $request->all(),
+                'resultQuestion' => $resultQuestion,
+            ]);
             return response()->json([
                 'success' => false,
                 'isCorrect' => false,
@@ -66,49 +91,21 @@ class GameController extends Controller
             ]);
         }
 
-        $question = $test->questions()->where('id', $questionId)->first();
-        if (is_null($question)) {
-            Log::error("questionId [$questionId] is not valid for resultId [$resultId]");
+        $resultQuestion->actual_answer = $answer;
+        if (!$resultQuestion->save()) {
             return response()->json([
                 'success' => false,
                 'isCorrect' => false,
                 'result' => $result,
             ]);
         }
-
-        $answer = null;
-        if (!is_null($answerText)) {
-            $answer = $question->answers()->where('alt_text', $answerText)->first();
-            $result->questions()->attach($questionId, ['answer_id' => $answer?->id]);
-        } else {
-            $question = Question::whereHas('answers', function ($query) use ($answerId) {
-                $query->where('id', $answerId);
-            })->where('id', $questionId)->first();
-            if (is_null($question)) {
-                Log::error("answerId [$answerId] is not valid for questionId [$questionId]");
-                return response()->json([
-                    'success' => false,
-                    'isCorrect' => false,
-                    'result' => $result,
-                ]);
-            }
-
-            $answer = Answer::find($answerId);
-            $result->questions()->attach($questionId, ['answer_id' => $answerId]);
-        }
         
-        $isCorrect = $answer?->is_correct ?? false;
+        $isCorrect = $resultQuestion->correct_answer == $answer;
         
-        $totalQuestions = count($test->questions);
-        $totalCorrectAnswers = 0;
-        foreach ($result->questions as $question) {
-            $answer = $question->pivot->answer;
-            if ($answer?->is_correct ?? false) {
-                $totalCorrectAnswers++;
-            }
+        if ($isCorrect) {
+            $result->score += $resultQuestion->score;
+            $result->save();
         }
-        $result->score = 100 * $totalCorrectAnswers;
-        $result->save();
         
         $totalScore = Result::where('user_id', auth()->id())->sum('score');
         /** @var User */
@@ -116,7 +113,10 @@ class GameController extends Controller
         $user->total_score = $totalScore;
         $user->save();
 
-        if ($totalQuestions == count($result->questions)) {
+        $totalQuestions = $result->test->levels()->sum('count');
+        $totalAnswered = count($result->questions);
+        if ($totalQuestions == $totalAnswered) {
+            $test = $result->test;
             if ($test->mode_id == Mode::NUMBER && is_null($user->achievements()->find(Achievement::FINISH_NUMBER_MODE))) {
                 $user->achievements()->attach(Achievement::FINISH_NUMBER_MODE);
             } else if ($test->mode_id == Mode::SHAPE && is_null($user->achievements()->find(Achievement::FINISH_SHAPE_MODE))) {
@@ -141,15 +141,14 @@ class GameController extends Controller
 
     public function result(Result $result) {
         $result->load([
-            'test.questions.answers',
+            'test.levels.questions',
             'questions',
         ]);
         
         $totalQuestions = count($result->test->questions);
         $totalCorrectAnswers = 0;
         foreach ($result->questions as $question) {
-            $answer = $question->pivot->answer;
-            if ($answer?->is_correct ?? false) {
+            if ($question->pivot->answer == $result->test->questions()->find($question->id)->answer) {
                 $totalCorrectAnswers++;
             }
         }
