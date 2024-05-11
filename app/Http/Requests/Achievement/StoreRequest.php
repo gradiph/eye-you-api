@@ -17,6 +17,7 @@ class StoreRequest extends FormRequest
             'id' => 'required|numeric',
             'name' => 'required',
             'image' => 'required|file|mimetypes:image/jpeg,image/png',
+            'order' => 'required|numeric'
         ];
     }
 }

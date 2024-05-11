@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Achievement\StoreRequest;
 use App\Http\Requests\Achievement\UpdateRequest;
 use App\Models\Achievement;
-use Illuminate\Support\Facades\Log;
 
 class AchievementController extends Controller
 {
@@ -32,6 +31,7 @@ class AchievementController extends Controller
         $achievement->id = $request->id;
         $achievement->name = $request->name;
         $achievement->image = $path;
+        $achievement->order = $request->order;
         $achievement->save();
 
         return response()->json([
@@ -60,6 +60,7 @@ class AchievementController extends Controller
         }
         
         $achievement->name = $request->name;
+        $achievement->order = $request->order;
         $achievement->save();
 
         return response()->json([

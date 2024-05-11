@@ -2,9 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Log;
 
 class QuestionSeeder extends Seeder
 {
@@ -52,11 +50,8 @@ class QuestionSeeder extends Seeder
     public function run(): void
     {
         $testLevels = \App\Models\TestLevel::all();
-        Log::debug('QuestionSeeder', ['testLevels' => $testLevels]);
         foreach ($testLevels as $testLevel) {
-            Log::debug('QuestionSeeder', ['testLevel' => $testLevel]);
             foreach (QuestionSeeder::QUESTIONS[$testLevel->level->difficulty] as $answer => $n) {
-                Log::debug('QuestionSeeder', ['answer' => $answer, 'n' => $n]);
                 for ($i = 1; $i <= $n; $i++) {
                     $testLevel->questions()->create([
                         'image' => "/images/questions/{$testLevel->level->difficulty}-$answer-$i.png",

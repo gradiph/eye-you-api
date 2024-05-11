@@ -78,6 +78,7 @@ class GameController extends Controller
             ]);
         }
 
+        /** @var Result */
         $result = $resultQuestion->result;
         if (!is_null($resultQuestion->actual_answer)) {
             Log::error("The question is already answered.", [
@@ -113,30 +114,55 @@ class GameController extends Controller
         $user->total_score = $totalScore;
         $user->save();
 
-        $totalQuestions = $result->test->levels()->sum('count');
-        $totalAnswered = count($result->questions);
-        if ($totalQuestions == $totalAnswered) {
-            $test = $result->test;
-            if ($test->mode_id == Mode::NUMBER && is_null($user->achievements()->find(Achievement::FINISH_NUMBER_MODE))) {
-                $user->achievements()->attach(Achievement::FINISH_NUMBER_MODE);
-            } else if ($test->mode_id == Mode::SHAPE && is_null($user->achievements()->find(Achievement::FINISH_SHAPE_MODE))) {
-                $user->achievements()->attach(Achievement::FINISH_SHAPE_MODE);
-            }
-        }
-
-        if ($totalScore >= 500 && is_null($user->achievements()->find(Achievement::REACH_SCORE_500))) {
-            $user->achievements()->attach(Achievement::REACH_SCORE_500);
-        }
-
-        if ($totalScore >= 1500 && is_null($user->achievements()->find(Achievement::REACH_SCORE_1500))) {
-            $user->achievements()->attach(Achievement::REACH_SCORE_1500);
-        }
+        $this->checkAchievements($user, $result, $totalScore);
 
         return response()->json([
             'success' => true,
             'isCorrect' => $isCorrect,
             'result' => $result,
         ]);
+    }
+
+    protected function checkAchievements(User $user, Result $result, int $totalScore) {
+        $totalQuestions = $result->test->levels()->sum('count');
+        $totalAnswered = count($result->questions);
+        if ($totalQuestions == $totalAnswered) {
+            $test = $result->test;
+            if ($test->mode_id == Mode::NUMBER && is_null($user->achievements()->withTrashed()->find(Achievement::FINISH_NUMBER_MODE))) {
+                $user->achievements()->attach(Achievement::FINISH_NUMBER_MODE);
+            } else if ($test->mode_id == Mode::SHAPE && is_null($user->achievements()->withTrashed()->find(Achievement::FINISH_SHAPE_MODE))) {
+                $user->achievements()->attach(Achievement::FINISH_SHAPE_MODE);
+            } else if ($test->mode_id == Mode::ISHIHARA && is_null($user->achievements()->withTrashed()->find(Achievement::FINISH_ISHIHARA_MODE))) {
+                $user->achievements()->attach(Achievement::FINISH_ISHIHARA_MODE);
+            }
+
+            $totalCorrectAnswers = $result->questions
+                ->filter(fn ($question) => $question->correct_answer == $question->actual_answer)
+                ->count();
+            if ($totalCorrectAnswers == $totalAnswered && is_null($user->achievements()->withTrashed()->find(Achievement::ALL_ANSWER_CORRECT))) {
+                $user->achievements()->attach(Achievement::ALL_ANSWER_CORRECT);
+            }
+        }
+
+        if ($totalScore >= 500 && is_null($user->achievements()->withTrashed()->find(Achievement::REACH_SCORE_500))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_500);
+        }
+
+        if ($totalScore >= 1500 && is_null($user->achievements()->withTrashed()->find(Achievement::REACH_SCORE_1500))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_1500);
+        }
+
+        if ($totalScore >= 5000 && is_null($user->achievements()->withTrashed()->find(Achievement::REACH_SCORE_5000))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_5000);
+        }
+
+        if ($totalScore >= 7500 && is_null($user->achievements()->withTrashed()->find(Achievement::REACH_SCORE_7500))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_7500);
+        }
+
+        if ($totalScore >= 10000 && is_null($user->achievements()->withTrashed()->find(Achievement::REACH_SCORE_10000))) {
+            $user->achievements()->attach(Achievement::REACH_SCORE_10000);
+        }
     }
 
     public function result(Result $result) {

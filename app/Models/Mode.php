@@ -12,6 +12,7 @@ class Mode extends Model
 
     const NUMBER = 1;
     const SHAPE = 2;
+    const ISHIHARA = 3;
 
     public $incrementing = false;
     protected $guarded = [];

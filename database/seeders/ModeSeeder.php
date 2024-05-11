@@ -17,11 +17,18 @@ class ModeSeeder extends Seeder
             'id' => Mode::NUMBER,
             'name' => 'Number',
             'image' => '/images/1-1.png',
+            'deleted_at' => now()
         ]);
-        // Mode::create([
-        //     'id' => Mode::SHAPE,
-        //     'name' => 'Shape',
-        //     'image' => '/images/TRIANGLE-3.png',
-        // ]);
+        Mode::create([
+            'id' => Mode::SHAPE,
+            'name' => 'Shape',
+            'image' => '/images/TRIANGLE-3.png',
+            'deleted_at' => now()
+        ]);
+        Mode::create([
+            'id' => Mode::ISHIHARA,
+            'name' => 'Mode Ishihara',
+            'image' => '/images/1-1.png',
+        ]);
     }
 }

@@ -15,7 +15,9 @@ return new class extends Migration
             $table->unsignedBigInteger('id')->primary();
             $table->string('name');
             $table->text('image');
+            $table->integer('order');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
