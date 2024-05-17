@@ -11,13 +11,8 @@ class ProfileController extends Controller
 {
     public function index()
     {
-        /** @var User */
-        $user = Auth::user();
-        $user->load([
-            'achievements',
-        ]);
         return response()->json([
-            'user' => $user,
+            'user' => Auth::user(),
         ]);
     }
 
