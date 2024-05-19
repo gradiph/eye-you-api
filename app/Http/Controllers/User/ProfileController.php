@@ -21,10 +21,20 @@ class ProfileController extends Controller
         /** @var User */
         $user = Auth::user();
         $user->name = $request->name;
-        $user->password = $request->password;
+
+        if ($request->has('password')) {
+            $user->password = $request->password;
+        }
+
+        if ($request->hasFile('image')) {
+            $path = $request->file('image')->storePublicly('public/images');
+            if ($path) {
+                $user->avatar = str_replace('public', 'storage', $path);
+            }
+        }
         $user->save();
         return response()->json([
-            'user' => $user->load(['achievements'])
+            'user' => $user,
         ]);
     }
 }

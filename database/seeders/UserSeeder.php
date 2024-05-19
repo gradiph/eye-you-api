@@ -17,7 +17,7 @@ class UserSeeder extends Seeder
             'email' => 'user1@email.com',
             'username' => 'user1',
             'password' => 'rahasia',
-            'avatar' => '/user-default.png',
+            'avatar' => 'storage/images/user-default.png',
         ]);
     }
 }

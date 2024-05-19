@@ -15,8 +15,9 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => 'required',
-            'password' => 'required|confirmed',
-            'password_confirmation' => 'required',
+            'password' => 'sometimes|confirmed',
+            'password_confirmation' => 'sometimes',
+            'image' => 'sometimes|image'
         ];
     }
 }

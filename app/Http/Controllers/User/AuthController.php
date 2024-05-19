@@ -19,7 +19,7 @@ class AuthController extends Controller
         $user->username = $request->username;
         $user->email = $request->email;
         $user->password = $request->password;
-        $user->avatar = $request->avatar ?? '/user-default.png';
+        $user->avatar = 'storage/images/user-default.png';
         $user->save();
 
         return response()->json([
